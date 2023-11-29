@@ -1,9 +1,9 @@
 package com.example.todoappstandaloneadmin.repository;
 
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
 public interface TodoRepository {
     List<TodoEntity> getAllTodos();
 

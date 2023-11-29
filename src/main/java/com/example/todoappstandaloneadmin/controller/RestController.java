@@ -29,23 +29,17 @@ public class RestController {
     }
 
     @PutMapping("/update/{id}")
-    public TodoEntity updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
-        return this.theService.updateById(todo, id);
+    public void updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
+        theService.updateById(todo, id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public TodoEntity removeById(@PathVariable Long id){
-        return this.theService.removeTodo(id);
+    public void removeById(@PathVariable Long id){
+        theService.removeTodo(id);
     }
 
     @GetMapping("/getbyid/{id}")
-    public TodoEntity getById(@PathVariable Long id) {
-        TodoEntity something = theService.getById(id);
-
-        if (something == null) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404));
-        }
-
-        return something;
+    public void getById(@PathVariable Long id) {
+        theService.getById(id);
     }
 }
