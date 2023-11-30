@@ -16,12 +16,8 @@ public class TodoRepositoryImpl implements TodoRepository {
 
     @Override
     public List<TodoEntity> getAllTodos() {
-        if (!todoEntities.isEmpty()) {
 
-            return todoEntities;
-        }
-
-        throw new EntityNotFoundException();
+        return todoEntities;
     }
 
     @Override
@@ -50,21 +46,6 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public String removeTodo(String id) {
-        for (TodoEntity listOfTodo : todoEntities) {
-
-            if (id.equals(listOfTodo.getId())) {
-
-                todoEntities.remove(listOfTodo);
-
-                return "Task with id " + id + " removed";
-            }
-        }
-
-        throw new EntityNotFoundException();
-    }
-
-    @Override
     public String updateById(TodoEntity todo, String id) {
         for (TodoEntity listOfTodo : todoEntities) {
 
@@ -75,6 +56,21 @@ public class TodoRepositoryImpl implements TodoRepository {
                 listOfTodo.setCompleted(todo.getCompleted());
 
                 return "Task with id " + id + " was updated";
+            }
+        }
+
+        throw new EntityNotFoundException();
+    }
+
+    @Override
+    public String removeTodo(String id) {
+        for (TodoEntity listOfTodo : todoEntities) {
+
+            if (id.equals(listOfTodo.getId())) {
+
+                todoEntities.remove(listOfTodo);
+
+                return "Task with id " + id + " removed";
             }
         }
 

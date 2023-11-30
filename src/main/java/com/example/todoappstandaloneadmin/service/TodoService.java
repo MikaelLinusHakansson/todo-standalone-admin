@@ -28,11 +28,11 @@ public class TodoService {
         return todoRepository.addTodo(task);
     }
 
-    public String removeTodo(String id) {
-        return todoRepository.removeTodo(id);
-    }
-
     public String updateById(TodoEntity todo, String id) {
         return todoRepository.updateById(todo, id);
+    }
+
+    public String removeTodo(String id) {
+        return todoRepository.removeTodo(id);
     }
 }

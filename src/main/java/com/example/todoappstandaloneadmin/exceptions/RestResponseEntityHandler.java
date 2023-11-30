@@ -9,8 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class RestResponseEntityHandler
-        extends ResponseEntityExceptionHandler {
+public class RestResponseEntityHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler (value = {IllegalArgumentException.class, IllegalStateException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
@@ -19,3 +18,5 @@ public class RestResponseEntityHandler
         new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 }
+
+// TODO fixa global exception handling
