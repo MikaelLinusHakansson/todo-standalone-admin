@@ -66,7 +66,6 @@ public class TodoRepositoryImpl implements TodoRepository {
 
     @Override
     public String updateById(TodoEntity todo, String id) {
-
         for (TodoEntity listOfTodo : todoEntities) {
 
             if (id.equals(listOfTodo.getId())) {
