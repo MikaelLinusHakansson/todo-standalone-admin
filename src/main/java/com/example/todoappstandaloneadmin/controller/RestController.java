@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
@@ -14,36 +16,37 @@ public class RestController {
 
     @Autowired
     public RestController(TodoService service) {
+
         this.theService = service;
     }
 
     @GetMapping("/getall")
-    public ResponseEntity getAllTodos() {
+    public List<TodoEntity> getAllTodos() {
 
-        return new ResponseEntity(theService.getAllTodos(), HttpStatus.OK);
+        return theService.getAllTodos();
     }
 
     @GetMapping("/getbyid/{id}")
-    public ResponseEntity getById(@PathVariable String id) {
+    public TodoEntity getById(@PathVariable String id) {
 
-        return new ResponseEntity(theService.getById(id), HttpStatus.OK);
+        return theService.getById(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity addTodo(@RequestBody TodoEntity task) {
+    public String addTodo(@RequestBody TodoEntity task) {
 
-        return new ResponseEntity(theService.addTodo(task), HttpStatus.OK);
+        return theService.addTodo(task);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity updateTask(@RequestBody TodoEntity todo, @PathVariable String id) {
+    public String updateTask(@RequestBody TodoEntity todo, @PathVariable String id) {
 
-        return new ResponseEntity(theService.updateById(todo, id), HttpStatus.OK);
+        return theService.updateById(todo, id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity removeById(@PathVariable String id){
+    public String removeById(@PathVariable String id){
 
-        return new ResponseEntity(theService.removeTodo(id), HttpStatus.OK);
+        return theService.removeTodo(id);
     }
 }

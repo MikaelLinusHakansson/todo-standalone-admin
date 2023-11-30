@@ -18,5 +18,3 @@ public class RestResponseEntityHandler extends ResponseEntityExceptionHandler {
         new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 }
-
-// TODO fixa global exception handling

@@ -1,6 +1,7 @@
 package com.example.todoappstandaloneadmin.repository;
 
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.exceptions.badRequest.EntityNameNotFoundBadRequest;
 import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,7 @@ public class TodoRepositoryImpl implements TodoRepository {
             return "Added todo " + todo.getId();
         }
 
-        throw new EntityNotFoundException();
+        throw new EntityNameNotFoundBadRequest();
 
     }
 
@@ -50,6 +51,12 @@ public class TodoRepositoryImpl implements TodoRepository {
         for (TodoEntity listOfTodo : todoEntities) {
 
             if (id.equals(listOfTodo.getId())) {
+
+                if (todo.getName().isEmpty()) {
+                    
+                    throw new EntityNameNotFoundBadRequest();
+                }
+
                 listOfTodo.setId(todo.getId());
                 listOfTodo.setName(todo.getName());
                 listOfTodo.setDate(todo.getDate());
