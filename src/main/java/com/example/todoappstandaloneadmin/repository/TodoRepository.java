@@ -9,7 +9,7 @@ public interface TodoRepository {
 
     TodoEntity getById(Long id);
 
-    void addTodo(TodoEntity todo);
+    TodoEntity addTodo(TodoEntity todo);
 
     TodoEntity removeTodo(Long id);
 

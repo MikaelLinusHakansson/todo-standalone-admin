@@ -1,5 +1,6 @@
 package com.example.todoappstandaloneadmin.controller;
 
+import com.example.todoappstandaloneadmin.HttpEnums.HttpStatus;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,34 @@ public class RestController {
         return theService.getAllTodos();
     }
 
+    @GetMapping("/getbyid/{id}")
+    public TodoEntity getById(@PathVariable Long id) {
+        try {
+
+            return theService.getById(id);
+        }
+
+        catch (ResponseStatusException exc) {
+
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), exc.getReason());
+        }
+    }
+
     @PostMapping("/add")
-    public void addTodo(@RequestBody TodoEntity task) {
-        this.theService.addTodo(task);
+    public TodoEntity addTodo(@RequestBody TodoEntity task) {
+        return this.theService.addTodo(task);
     }
 
     @PutMapping("/update/{id}")
-    public void updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
-        theService.updateById(todo, id);
+    public TodoEntity updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
+        return theService.updateById(todo, id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeById(@PathVariable Long id){
-        theService.removeTodo(id);
-    }
-
-    @GetMapping("/getbyid/{id}")
-    public void getById(@PathVariable Long id) {
-        theService.getById(id);
+    public TodoEntity removeById(@PathVariable Long id){
+        if (theService.removeTodo(id) != null) {
+            return theService.removeTodo((id));
+        }
+        return null;
     }
 }

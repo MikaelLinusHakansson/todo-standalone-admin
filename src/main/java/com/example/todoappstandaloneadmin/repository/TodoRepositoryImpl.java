@@ -1,13 +1,18 @@
 package com.example.todoappstandaloneadmin.repository;
 
+import com.example.todoappstandaloneadmin.HttpEnums.HttpStatus;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TodoRepositoryImpl implements TodoRepository{
+public class TodoRepositoryImpl implements TodoRepository {
     private final List<TodoEntity> todoEntities;
 
     public TodoRepositoryImpl(List<TodoEntity> todoEntities) {
@@ -16,27 +21,41 @@ public class TodoRepositoryImpl implements TodoRepository{
 
     @Override
     public List<TodoEntity> getAllTodos() {
-        return this.todoEntities;
+        if (todoEntities.size() < 1) {
+
+            return this.todoEntities;
+        }
+
+        throw new ResponseStatusException(HttpStatusCode.valueOf(404), HttpStatus.HTTP_STATUS_404.name());
     }
 
     @Override
     public TodoEntity getById(Long id) {
-        Optional<TodoEntity> findTodo = todoEntities.stream()
-                .filter(findId -> findId.getId().equals(id))
-                .findFirst();
+        for (TodoEntity todoEntity : todoEntities) {
 
-        return findTodo.orElse(null);
+            if (id.equals(todoEntity.getId())) {
+                 return todoEntity;
+            }
+        }
+
+
+        throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Entity Not Found");
     }
 
     @Override
-    public void addTodo(TodoEntity todo) {
+    public TodoEntity addTodo(TodoEntity todo) {
+        if (todo == null) {
+
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Entity Not Found");
+        }
+
         todoEntities.add(todo);
+
+        return todo;
     }
 
     @Override
     public TodoEntity removeTodo(Long id) {
-        TodoEntity tempTodo = new TodoEntity("No match", "No match", false);
-
         for (TodoEntity listOfTodo : todoEntities) {
 
             if (listOfTodo.getId().equals(id)) {
@@ -45,13 +64,12 @@ public class TodoRepositoryImpl implements TodoRepository{
                 return listOfTodo;
             }
         }
-        return tempTodo;
+
+        throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Entity Not Found");
     }
 
     @Override
     public TodoEntity updateById(TodoEntity todo, Long id) {
-        TodoEntity tempTodo = new TodoEntity("No match", "No match", false);
-
         for (TodoEntity listOfTodo : todoEntities) {
 
             if (listOfTodo.getId().equals(id)) {
@@ -64,6 +82,6 @@ public class TodoRepositoryImpl implements TodoRepository{
             }
         }
 
-        return tempTodo;
+        throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Entity Not Found");
     }
 }

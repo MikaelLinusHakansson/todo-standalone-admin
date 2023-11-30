@@ -3,11 +3,11 @@ package com.example.todoappstandaloneadmin.service;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -19,22 +19,46 @@ public class TodoService {
     }
 
     public List<TodoEntity> getAllTodos() {
-        return todoRepository.getAllTodos();
+        try {
+
+            return todoRepository.getAllTodos();
+        }
+
+        catch (ResponseStatusException exc) {
+
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), exc.getReason());
+        }
     }
 
-    public void addTodo(TodoEntity task) {
-        todoRepository.addTodo(task);
+    public TodoEntity getById(Long id) {
+        return todoRepository.getById(id);
     }
 
-    public void removeTodo(Long id) {
-        todoRepository.removeTodo(id);
+    public TodoEntity addTodo(TodoEntity task) {
+        try {
+            return todoRepository.addTodo(task);
+        }
+
+        catch (ResponseStatusException exc) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), exc.getReason());
+        }
     }
 
-    public void updateById(TodoEntity todo, Long id) {
-        todoRepository.updateById(todo, id);
+    public TodoEntity removeTodo(Long id) {
+        if (todoRepository.removeTodo(id) != null) {
+
+            return todoRepository.removeTodo(id);
+        }
+
+        return null;
     }
 
-    public void getById(Long id) {  // TODO Return something?
-        todoRepository.getById(id);
+    public TodoEntity updateById(TodoEntity todo, Long id) {
+        if (todoRepository.updateById(todo, id) != null) {
+
+            return todoRepository.updateById(todo, id);
+        }
+
+        return null;
     }
 }
