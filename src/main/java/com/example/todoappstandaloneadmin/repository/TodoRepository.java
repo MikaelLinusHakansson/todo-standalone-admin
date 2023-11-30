@@ -7,11 +7,11 @@ import java.util.List;
 public interface TodoRepository {
     List<TodoEntity> getAllTodos();
 
-    TodoEntity getById(Long id);
+    TodoEntity getById(String id);
 
-    TodoEntity addTodo(TodoEntity todo);
+    String addTodo(TodoEntity todo);
 
-    TodoEntity removeTodo(Long id);
+    String removeTodo(String id);
 
-    TodoEntity updateById(TodoEntity todo, Long id);
+    String updateById(TodoEntity todo, String id);
 }

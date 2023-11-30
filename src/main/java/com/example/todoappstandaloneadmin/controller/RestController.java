@@ -1,12 +1,12 @@
 package com.example.todoappstandaloneadmin.controller;
 
-import com.example.todoappstandaloneadmin.HttpEnums.HttpStatus;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import com.example.todoappstandaloneadmin.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,38 +20,68 @@ public class RestController {
     }
 
     @GetMapping("/getall")
-    public List<TodoEntity> getAllTodos() {
-        return theService.getAllTodos();
+    public ResponseEntity getAllTodos() {
+        try {
+
+            return new ResponseEntity(theService.getAllTodos(), HttpStatus.OK);
+        }
+
+        catch (EntityNotFoundException usersNotFound) {
+
+            return new ResponseEntity(usersNotFound.getMessage(), HttpStatus.CONFLICT);
+        }
+
     }
 
     @GetMapping("/getbyid/{id}")
-    public TodoEntity getById(@PathVariable Long id) {
+    public ResponseEntity getById(@PathVariable String id) {
         try {
 
-            return theService.getById(id);
+            return new ResponseEntity(theService.getById(id), HttpStatus.OK);
         }
 
-        catch (ResponseStatusException exc) {
+        catch (EntityNotFoundException userNotFound) {
 
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), exc.getReason());
+            return new ResponseEntity(userNotFound.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
     @PostMapping("/add")
-    public TodoEntity addTodo(@RequestBody TodoEntity task) {
-        return this.theService.addTodo(task);
+    public ResponseEntity addTodo(@RequestBody TodoEntity task) {
+        try {
+
+            return new ResponseEntity(theService.addTodo(task), HttpStatus.OK);
+        }
+
+        catch (EntityNotFoundException taskWasEmtpy) {
+
+
+            return new ResponseEntity(taskWasEmtpy.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @PutMapping("/update/{id}")
-    public TodoEntity updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
-        return theService.updateById(todo, id);
+    public ResponseEntity updateTask(@RequestBody TodoEntity todo, @PathVariable String id) {
+        try {
+            return new ResponseEntity(theService.updateById(todo, id), HttpStatus.OK);
+        }
+
+        catch (EntityNotFoundException taskNotFound) {
+
+            return new ResponseEntity(taskNotFound.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public TodoEntity removeById(@PathVariable Long id){
-        if (theService.removeTodo(id) != null) {
-            return theService.removeTodo((id));
+    public ResponseEntity removeById(@PathVariable String id){
+        try {
+
+            return new ResponseEntity(theService.removeTodo(id), HttpStatus.OK);
         }
-        return null;
+
+        catch (EntityNotFoundException userNotFound) {
+
+            return new ResponseEntity(userNotFound.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 }

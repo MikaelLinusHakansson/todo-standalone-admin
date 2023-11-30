@@ -3,9 +3,7 @@ package com.example.todoappstandaloneadmin.service;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,46 +17,22 @@ public class TodoService {
     }
 
     public List<TodoEntity> getAllTodos() {
-        try {
-
-            return todoRepository.getAllTodos();
-        }
-
-        catch (ResponseStatusException exc) {
-
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), exc.getReason());
-        }
+        return todoRepository.getAllTodos();
     }
 
-    public TodoEntity getById(Long id) {
+    public TodoEntity getById(String id) {
         return todoRepository.getById(id);
     }
 
-    public TodoEntity addTodo(TodoEntity task) {
-        try {
-            return todoRepository.addTodo(task);
-        }
-
-        catch (ResponseStatusException exc) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), exc.getReason());
-        }
+    public String addTodo(TodoEntity task) {
+        return todoRepository.addTodo(task);
     }
 
-    public TodoEntity removeTodo(Long id) {
-        if (todoRepository.removeTodo(id) != null) {
-
-            return todoRepository.removeTodo(id);
-        }
-
-        return null;
+    public String removeTodo(String id) {
+        return todoRepository.removeTodo(id);
     }
 
-    public TodoEntity updateById(TodoEntity todo, Long id) {
-        if (todoRepository.updateById(todo, id) != null) {
-
-            return todoRepository.updateById(todo, id);
-        }
-
-        return null;
+    public String updateById(TodoEntity todo, String id) {
+        return todoRepository.updateById(todo, id);
     }
 }
