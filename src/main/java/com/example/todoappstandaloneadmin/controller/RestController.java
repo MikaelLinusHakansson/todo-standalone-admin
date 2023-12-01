@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @org.springframework.web.bind.annotation.RestController
-@CrossOrigin("http://localhost:5174/")
+@CrossOrigin("http://localhost:5173/")  // TODO change the ports. 5174 for work 5173 for home
 public class RestController {
     private final TodoService theService;
 
@@ -44,7 +44,6 @@ public class RestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @CrossOrigin("http://localhost:5174/")
     public String removeById(@PathVariable String id){
 
         return theService.removeTodo(id);
