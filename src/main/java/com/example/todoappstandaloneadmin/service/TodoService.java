@@ -13,26 +13,32 @@ public class TodoService {
 
     @Autowired
     public TodoService(TodoRepository repository) {
+
         this.todoRepository = repository;
     }
 
     public List<TodoEntity> getAllTodos() {
+
         return todoRepository.getAllTodos();
     }
 
     public TodoEntity getById(String id) {
+
         return todoRepository.getById(id);
     }
 
     public String addTodo(TodoEntity task) {
+
         return todoRepository.addTodo(task);
     }
 
     public String updateById(TodoEntity todo, String id) {
+
         return todoRepository.updateById(todo, id);
     }
 
     public String removeTodo(String id) {
+
         return todoRepository.removeTodo(id);
     }
 }
