@@ -14,7 +14,6 @@ public class TodoEntity {
     }
 
     public TodoEntity(String name, String date, Boolean completed, String id) {
-
         this.id = id;
         this.name = name;
         this.date = date;
@@ -22,7 +21,6 @@ public class TodoEntity {
     }
 
     public TodoEntity(String name, String date, Boolean completed) {
-
         this.name = name;
         this.date = date;
         this.completed = completed;

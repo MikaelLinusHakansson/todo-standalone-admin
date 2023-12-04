@@ -15,37 +15,31 @@ public class RestController {
 
     @Autowired
     public RestController(TodoService service) {
-
         this.theService = service;
     }
 
     @GetMapping("/getall")
     public List<TodoEntity> getAllTodos() {
-
         return theService.getAllTodos();
     }
 
     @GetMapping("/getbyid/{id}")
     public TodoEntity getById(@PathVariable String id) {
-
         return theService.getById(id);
     }
 
     @PostMapping("/add")
     public String addTodo(@RequestBody TodoEntity task) {
-
         return theService.addTodo(task);
     }
 
     @PutMapping("/update/{id}")
     public String updateTask(@RequestBody TodoEntity todo, @PathVariable String id) {
-
         return theService.updateById(todo, id);
     }
 
     @DeleteMapping("/delete/{id}")
     public String removeById(@PathVariable String id){
-
         return theService.removeTodo(id);
     }
 }

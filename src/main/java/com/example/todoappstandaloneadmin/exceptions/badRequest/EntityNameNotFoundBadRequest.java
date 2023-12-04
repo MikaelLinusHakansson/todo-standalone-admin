@@ -8,7 +8,6 @@ public class EntityNameNotFoundBadRequest extends RuntimeException{
     private String message;
 
     public EntityNameNotFoundBadRequest(String message) {
-
         super(message);
         this.message = message;
     }
