@@ -29,13 +29,13 @@ public class RestController {
     }
 
     @PostMapping("/add")
-    public String addTodo(@RequestBody TodoEntity task) {
-        return theService.addTodo(task);
+    public void addTodo(@RequestBody TodoEntity task) {
+        theService.addTodo(task);
     }
 
     @PutMapping("/update/{id}")
-    public String updateTask(@RequestBody TodoEntity todo, @PathVariable String id) {
-        return theService.updateById(todo, id);
+    public void updateTask(@RequestBody TodoEntity todo, @PathVariable String id) {
+        theService.updateById(todo, id);
     }
 
     @DeleteMapping("/delete/{id}")

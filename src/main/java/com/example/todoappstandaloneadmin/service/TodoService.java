@@ -24,12 +24,12 @@ public class TodoService {
         return todoRepository.getById(id);
     }
 
-    public String addTodo(TodoEntity task) {
-        return todoRepository.addTodo(task);
+    public void addTodo(TodoEntity task) {
+        todoRepository.addTodo(task);
     }
 
-    public String updateById(TodoEntity todo, String id) {
-        return todoRepository.updateById(todo, id);
+    public void updateById(TodoEntity todo, String id) {
+        todoRepository.updateById(todo, id);
     }
 
     public void removeTodo(String id) {

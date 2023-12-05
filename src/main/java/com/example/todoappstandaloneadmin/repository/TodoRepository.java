@@ -9,9 +9,9 @@ public interface TodoRepository {
 
     TodoEntity getById(String id);
 
-    String addTodo(TodoEntity todo);
+    void addTodo(TodoEntity todo);
 
     void removeTodo(String id);
 
-    String updateById(TodoEntity todo, String id);
+    void updateById(TodoEntity todo, String id);
 }

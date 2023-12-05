@@ -32,17 +32,17 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public String addTodo(TodoEntity todo) {
+    public void addTodo(TodoEntity todo) {
         if (!todo.getName().isEmpty()) {
             todoEntities.add(todo);
-            return "Added todo " + todo.getId();
+            return;
         }
 
         throw new EntityNameNotFoundBadRequest();
     }
 
     @Override
-    public String updateById(TodoEntity todo, String id) {
+    public void updateById(TodoEntity todo, String id) {
         for (TodoEntity listOfTodo : todoEntities) {
             if (id.equals(listOfTodo.getId())) {
                 if (todo.getName().isEmpty()) {
@@ -54,7 +54,7 @@ public class TodoRepositoryImpl implements TodoRepository {
                 listOfTodo.setDate(todo.getDate());
                 listOfTodo.setCompleted(todo.getCompleted());
 
-                return "Task with id " + id + " was updated";
+                return;
             }
         }
 
