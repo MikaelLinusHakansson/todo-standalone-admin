@@ -62,11 +62,11 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public String removeTodo(String id) {
+    public void removeTodo(String id) {
         for (TodoEntity listOfTodo : todoEntities) {
             if (id.equals(listOfTodo.getId())) {
                 todoEntities.remove(listOfTodo);
-                return "Task with id " + id + " removed";
+                return;
             }
         }
 

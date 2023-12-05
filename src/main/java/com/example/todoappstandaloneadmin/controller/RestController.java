@@ -39,7 +39,7 @@ public class RestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public String removeById(@PathVariable String id){
-        return theService.removeTodo(id);
+    public void removeById(@PathVariable String id){
+        theService.removeTodo(id);
     }
 }

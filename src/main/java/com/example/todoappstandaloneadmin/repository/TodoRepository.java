@@ -11,7 +11,7 @@ public interface TodoRepository {
 
     String addTodo(TodoEntity todo);
 
-    String removeTodo(String id);
+    void removeTodo(String id);
 
     String updateById(TodoEntity todo, String id);
 }
