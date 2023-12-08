@@ -1,6 +1,7 @@
 package com.example.todoappstandaloneadmin.service;
 
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,22 +18,34 @@ public class TodoService {
     }
 
     public List<TodoEntity> getAllTodos() {
-        return todoRepository.getAllTodos();
+        return todoRepository.findAll();
     }
 
-    public TodoEntity getById(String id) {
-        return todoRepository.getById(id);
+    public TodoEntity getById(Long id) {
+        for (TodoEntity allTodo : getAllTodos()) {
+            if (id.equals(allTodo.getId())) {
+                return allTodo;
+            }
+        }
+
+        throw new EntityNotFoundException();
     }
 
     public void addTodo(TodoEntity task) {
-        todoRepository.addTodo(task);
+        todoRepository.save(task);
     }
 
-    public void updateById(TodoEntity todo, String id) {
-        todoRepository.updateById(todo, id);
+    public void updateById(TodoEntity todo, Long id) {
+        if (todoRepository.findById(id).isPresent()) {
+            todoRepository.save(todo);
+        }
+
+        else {
+            throw new EntityNotFoundException();
+        }
     }
 
-    public void removeTodo(String id) {
-        todoRepository.removeTodo(id);
+    public void removeTodo(Long id) {
+        todoRepository.deleteById(id);
     }
 }

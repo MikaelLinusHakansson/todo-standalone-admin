@@ -1,3 +1,4 @@
+/*
 package com.example.todoappstandaloneadmin.repository;
 
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
@@ -73,3 +74,4 @@ public class TodoRepositoryImpl implements TodoRepository {
         throw new EntityNotFoundException();
     }
 }
+*/
