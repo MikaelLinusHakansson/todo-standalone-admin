@@ -1,11 +1,15 @@
 package com.example.todoappstandaloneadmin.service;
 
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.exceptions.badRequest.EntityNameNotFoundBadRequest;
 import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -28,11 +32,22 @@ public class TodoService {
             }
         }
 
-        throw new EntityNotFoundException();
+        throw new EntityNotFoundException("Could not find matching ID");
     }
 
     public void addTodo(TodoEntity task) {
-        todoRepository.save(task);
+        if (!task.getName().isBlank()) {
+            if (task.getDate().isBlank()) {
+                Calendar today = new GregorianCalendar();
+                task.setDate(today.getTime().toString());
+            }
+
+            todoRepository.save(task);
+        }
+
+        else {
+            throw new EntityNameNotFoundBadRequest("Name is empty");
+        }
     }
 
     public void updateById(TodoEntity todo, Long id) {
@@ -41,11 +56,17 @@ public class TodoService {
         }
 
         else {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("Could not find matching ID");
         }
     }
 
     public void removeTodo(Long id) {
-        todoRepository.deleteById(id);
+        if (todoRepository.findById(id).isPresent()) {
+            todoRepository.deleteById(id);
+        }
+
+        else {
+            throw new EntityNotFoundException("Could not find matching ID");
+        }
     }
 }

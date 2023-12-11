@@ -6,13 +6,5 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
-    /*List<TodoEntity> getAllTodos();
 
-    TodoEntity getById(String id);
-
-    void addTodo(TodoEntity todo);
-
-    void removeTodo(String id);
-
-    void updateById(TodoEntity todo, String id);*/
 }
