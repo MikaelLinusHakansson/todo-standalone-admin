@@ -51,6 +51,11 @@ public class TodoService {
 
     public void updateById(TodoEntity todo, Long id) {
         if (todoRepository.findById(id).isPresent()) {
+            if (todo.getDate().isBlank()) {
+                Calendar today = new GregorianCalendar();
+                todo.setDate(today.getTime().toString());
+            }
+
             todoRepository.save(todo);
         }
 
