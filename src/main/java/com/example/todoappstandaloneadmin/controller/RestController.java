@@ -31,17 +31,17 @@ public class RestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addTodo(@RequestBody TodoEntity task) {
+    public TodoEntity addTodo(@RequestBody TodoEntity task) {
         theService.addTodo(task);
 
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return task;
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
+    public TodoEntity updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
         theService.updateById(todo, id);
 
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return todo;
     }
 
     @DeleteMapping("/delete/{id}")

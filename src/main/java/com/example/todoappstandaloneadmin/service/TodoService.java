@@ -7,8 +7,6 @@ import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -36,32 +34,24 @@ public class TodoService {
 
     public void addTodo(TodoEntity task) {
         if (!task.getName().isBlank()) {
-            if (task.getDate().isBlank()) {
-                Calendar today = new GregorianCalendar();
-                task.setDate(today.getTime().toString());
-            }
-
             todoRepository.save(task);
         }
 
         else {
             throw new EntityNameNotFoundBadRequest("Name is empty");
         }
+
     }
 
     public void updateById(TodoEntity todo, Long id) {
         if (todoRepository.findById(id).isPresent()) {
-            if (todo.getDate().isBlank()) {
-                Calendar today = new GregorianCalendar();
-                todo.setDate(today.getTime().toString());
-            }
-
             todoRepository.save(todo);
         }
 
         else {
             throw new EntityNotFoundException("Could not find matching ID");
         }
+
     }
 
     public void removeTodo(Long id) {
