@@ -8,7 +8,6 @@ import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,23 +19,12 @@ public class TodoService {
         this.todoRepository = repository;
     }
 
-    public List<TodoDto> getAllTodos() {
-        List<TodoDto> todoDtos = new ArrayList<>();
-
-        for (TodoEntity allTodo : todoRepository.findAll()) {
-            TodoDto todoDto = new TodoDto();
-            todoDto.setId(allTodo.getId());
-            todoDto.setName(allTodo.getName());
-            todoDto.setDate(allTodo.getDate());
-            todoDto.setCompleted(allTodo.getCompleted());
-
-            todoDtos.add(todoDto);
-        }
-        return todoDtos;
+    public List<TodoEntity> getAllTodos() {
+        return todoRepository.findAll();
     }
 
-    public TodoDto getById(Long id) {
-        for (TodoDto allTodo : getAllTodos()) {
+    public TodoEntity getById(Long id) {
+        for (TodoEntity allTodo : getAllTodos()) {
             if (id.equals(allTodo.getId())) {
                 return allTodo;
             }
@@ -44,17 +32,11 @@ public class TodoService {
         throw new EntityNotFoundException("Could not find matching ID");
     }
 
-    public TodoDto addTodo(TodoEntity task) {
+    public TodoEntity addTodo(TodoEntity task) {
         if (!task.getName().isBlank()) {
             todoRepository.save(task);
 
-            TodoDto todoDto = new TodoDto();
-            todoDto.setId(task.getId());
-            todoDto.setName(task.getName());
-            todoDto.setDate(task.getDate());
-            todoDto.setCompleted(task.getCompleted());
-
-            return todoDto;
+            return task;
         }
 
         else {
@@ -62,17 +44,9 @@ public class TodoService {
         }
     }
 
-    public TodoDto updateById(TodoEntity todo, Long id) {
+    public TodoEntity updateById(TodoEntity todo, Long id) {
         if (todoRepository.findById(id).isPresent()) {
-            todoRepository.save(todo);
-
-            TodoDto todoDto = new TodoDto();
-            todoDto.setId(todo.getId());
-            todoDto.setName(todo.getName());
-            todoDto.setDate(todo.getDate());
-            todoDto.setCompleted(todo.getCompleted());
-
-            return todoDto;
+            return todoRepository.save(todo);
         }
 
         else {

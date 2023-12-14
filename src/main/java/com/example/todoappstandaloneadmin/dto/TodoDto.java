@@ -1,6 +1,8 @@
 package com.example.todoappstandaloneadmin.dto;
 
+import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import lombok.Data;
+
 @Data
 public class TodoDto {
     private Long id;
@@ -19,6 +21,13 @@ public class TodoDto {
         this.name = name;
         this.date = date;
         this.completed = completed;
+    }
+
+    public TodoDto(TodoEntity todoEntity) {
+        this.id = todoEntity.getId();
+        this.name = todoEntity.getName();
+        this.date = todoEntity.getDate();
+        this.completed = todoEntity.getCompleted();
     }
 
     public TodoDto() {
