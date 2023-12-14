@@ -40,7 +40,6 @@ public class TodoService {
         else {
             throw new EntityNameNotFoundBadRequest("Name is empty");
         }
-
     }
 
     public void updateById(TodoEntity todo, Long id) {
@@ -51,7 +50,6 @@ public class TodoService {
         else {
             throw new EntityNotFoundException("Could not find matching ID");
         }
-
     }
 
     public void removeTodo(Long id) {
