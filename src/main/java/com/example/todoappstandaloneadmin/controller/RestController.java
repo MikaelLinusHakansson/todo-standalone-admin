@@ -1,10 +1,10 @@
 package com.example.todoappstandaloneadmin.controller;
 
+import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.service.TodoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,41 +13,35 @@ import java.util.List;
 @org.springframework.web.bind.annotation.RestController
 @CrossOrigin(origins = "*")
 public class RestController {
-    private final TodoService theService;
+    private final TodoService todoService;
 
     @Autowired
     public RestController(TodoService service) {
-        this.theService = service;
+        this.todoService = service;
     }
 
     @GetMapping("/getall")
-    public List<TodoEntity> getAllTodos() {
-        return theService.getAllTodos();
+    public List<TodoDto> getAllTodos() {
+        return todoService.getAllTodos();
     }
 
     @GetMapping("/getbyid/{id}")
-    public TodoEntity getById(@PathVariable Long id) {
-        return theService.getById(id);
+    public TodoDto getById(@PathVariable Long id) {
+        return todoService.getById(id);
     }
 
     @PostMapping("/add")
-    public TodoEntity addTodo(@RequestBody TodoEntity task) {
-        theService.addTodo(task);
-
-        return task;
+    public TodoDto addTodo(@RequestBody TodoEntity task) {
+        return  todoService.addTodo(task);
     }
 
     @PutMapping("/update/{id}")
-    public TodoEntity updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
-        theService.updateById(todo, id);
-
-        return todo;
+    public TodoDto updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
+        return todoService.updateById(todo, id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> removeById(@PathVariable Long id){
-        theService.removeTodo(id);
-
-        return new ResponseEntity<>("", HttpStatus.OK);
+    public void removeById(@PathVariable Long id){
+        todoService.removeTodo(id);
     }
 }
