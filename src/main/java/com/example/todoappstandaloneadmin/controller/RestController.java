@@ -1,5 +1,6 @@
 package com.example.todoappstandaloneadmin.controller;
 
+import com.example.todoappstandaloneadmin.dao.TodoDao;
 import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.service.TodoService;
@@ -7,6 +8,7 @@ import com.example.todoappstandaloneadmin.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,32 +24,34 @@ public class RestController {
     }
 
     @GetMapping("/getall")
-    public List<TodoDto> getAllTodos() {
+    public List<TodoDto> getAllTodos() throws Exception {
         List<TodoDto> todoDtos = new ArrayList<>();
-        for (TodoEntity allTodo : todoService.getAllTodos()) {
-            TodoDto todoDto = new TodoDto(allTodo);
-            todoDtos.add(todoDto);
+
+        for (TodoEntity todoEntity : TodoDao.getAll()) {
+            TodoDto tempDto = new TodoDto(todoEntity);
+            todoDtos.add(tempDto);
         }
+
         return todoDtos;
     }
 
     @GetMapping("/getbyid/{id}")
     public TodoDto getById(@PathVariable Long id) {
-        return new TodoDto(todoService.getById(id));
+        return new TodoDto(TodoDao.getById(id));
     }
 
     @PostMapping("/add")
-    public TodoDto addTodo(@RequestBody TodoEntity task) {
-        return new TodoDto(todoService.addTodo(task));
+    public TodoDto addTodo(@RequestBody TodoEntity task) throws SQLException {
+        return new TodoDto(TodoDao.add(task));
     }
 
     @PutMapping("/update/{id}")
-    public TodoDto updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) {
-        return new TodoDto(todoService.updateById(todo, id));
+    public TodoDto updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) throws SQLException {
+        return new TodoDto(TodoDao.update(todo, id));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeById(@PathVariable Long id){
-        todoService.removeTodo(id);
+    public void removeById(@PathVariable Long id) throws SQLException {
+        TodoDao.delete(id);
     }
 }
