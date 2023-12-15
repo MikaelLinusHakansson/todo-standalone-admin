@@ -76,7 +76,7 @@ public class TodoDao {
                         ("insert into todo_entity " +
                                 "(completed, name, date) " +
                                 "values (?, ?, ?)",
-                                Statement.RETURN_GENERATED_KEYS);)
+                                Statement.RETURN_GENERATED_KEYS))
         {
             myPreparedStatement.setBoolean(1, todo.getCompleted());
             myPreparedStatement.setString(2, todo.getName());
