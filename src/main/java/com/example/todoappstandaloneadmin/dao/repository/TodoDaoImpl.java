@@ -4,6 +4,7 @@ import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.exceptions.badRequest.EntityNameNotFoundBadRequest;
 import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import org.springframework.stereotype.Component;
+import com.example.todoappstandaloneadmin.configurations.DaoConfiguration;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,13 +12,15 @@ import java.util.List;
 
 @Component
 public class TodoDaoImpl implements Dao {
-    private final String dbUrl = "jdbc:mysql://localhost:3306/local_server";
-    private final String dbUser = "root";
-    private final String dbPass = "Linsalainen5931";
+    private final String dbUrl = System.getenv("DB_PORT") + System.getenv("DB_NAME");
+    private final String dbUser = System.getenv("DB_USERNAME");
+    private final String dbPass = System.getenv("DB_PASSWORD");
+    private final DaoConfiguration daoConfiguration = new DaoConfiguration();
 
     @Override
     public List<TodoEntity> getAll() throws SQLException {
         List<TodoEntity> todoEntityList = new ArrayList<>();
+
         try (
                 Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
                 Statement stmt = conn.createStatement();
@@ -69,8 +72,8 @@ public class TodoDaoImpl implements Dao {
                 Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
                 PreparedStatement preparedStatement = conn.prepareStatement(
                         "insert into todo_entity " + "(completed, name, date) " +
-                                "values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-
+                                "values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)
+        ) {
             preparedStatement.setBoolean(1, todo.getCompleted());
             preparedStatement.setString(2, todo.getName());
             preparedStatement.setString(3, todo.getDate());
