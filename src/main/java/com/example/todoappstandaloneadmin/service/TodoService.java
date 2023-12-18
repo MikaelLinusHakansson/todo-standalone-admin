@@ -1,6 +1,5 @@
 package com.example.todoappstandaloneadmin.service;
 
-import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.exceptions.badRequest.EntityNameNotFoundBadRequest;
 import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
