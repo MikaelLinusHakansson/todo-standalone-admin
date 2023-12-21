@@ -20,7 +20,7 @@ public class JWTGenerator {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.ES512, SecurityConstants.JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET)
                 .compact();
         return token;
     }

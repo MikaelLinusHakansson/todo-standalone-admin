@@ -15,6 +15,7 @@ import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("api/todo")
 public class RestController {
     private final TodoService todoService;
     private final TodoDaoService todoDaoService;
