@@ -16,13 +16,12 @@ public class JWTGenerator {
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
+//                .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET)
                 .compact();
-        return token;
     }
 
     public String getUserNameFromJWT(String token) {
@@ -39,8 +38,8 @@ public class JWTGenerator {
             Jwts.parser()
                     .setSigningKey(SecurityConstants.JWT_SECRET)
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                    .parseSignedClaims(token);
+//                    .getPayload();
 
             return true;
         }

@@ -30,7 +30,7 @@ public class RestController {
     public List<TodoDto> getAllTodos() throws Exception {
         List<TodoDto> todoDtos = new ArrayList<>();
 
-        for (TodoEntity todoEntity : todoDaoService.getAll()) {
+        for (TodoEntity todoEntity : todoService.getAllTodos()) {
             TodoDto tempDto = new TodoDto(todoEntity);
             todoDtos.add(tempDto);
         }
@@ -40,21 +40,21 @@ public class RestController {
 
     @GetMapping("/getbyid/{id}")
     public TodoDto getById(@PathVariable Long id) throws SQLException {
-        return new TodoDto(todoDaoService.getById(id));
+        return new TodoDto(todoService.getById(id));
     }
 
     @PostMapping("/add")
     public TodoDto addTodo(@RequestBody TodoEntity task) throws SQLException {
-        return new TodoDto(todoDaoService.add(task));
+        return new TodoDto(todoService.addTodo(task));
     }
 
     @PutMapping("/update/{id}")
     public TodoDto updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) throws SQLException {
-        return new TodoDto(todoDaoService.update(todo, id));
+        return new TodoDto(todoService.updateById(todo, id));
     }
 
     @DeleteMapping("/delete/{id}")
     public void removeById(@PathVariable Long id) throws SQLException {
-        todoDaoService.delete(id);
+        todoService.removeTodo(id);
     }
 }
