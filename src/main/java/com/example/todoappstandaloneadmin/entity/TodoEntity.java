@@ -1,9 +1,6 @@
 package com.example.todoappstandaloneadmin.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,6 +16,10 @@ public class TodoEntity {
     private String name;
     private String date;
     private Boolean completed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     public TodoEntity() {
     }
