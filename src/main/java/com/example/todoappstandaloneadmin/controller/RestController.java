@@ -3,6 +3,8 @@ package com.example.todoappstandaloneadmin.controller;
 import com.example.todoappstandaloneadmin.dao.service.TodoDaoService;
 import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.entity.UserEntity;
+import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import com.example.todoappstandaloneadmin.repository.UserRepository;
 import com.example.todoappstandaloneadmin.service.TodoService;
 
@@ -51,12 +53,6 @@ public class RestController {
             todoDtos.add(tempDto);
 
         }
-        /*List<TodoDto> todoDtos = new ArrayList<>();
-        for (TodoEntity todoEntity : todoService.getAllTodos()) {
-            TodoDto tempDto = new TodoDto(todoEntity);
-            todoDtos.add(tempDto);
-        }*/
-
         return todoDtos;
     }
 
@@ -67,22 +63,39 @@ public class RestController {
 
     @PostMapping("/add")
     public TodoDto addTodo(@RequestBody TodoDto task) throws SQLException {
-        System.out.println("Adding task: ");
-        System.out.println(task);
+        TodoEntity todo = new TodoEntity();
 
-        TodoEntity something = new TodoEntity();
+        todo.setName(task.getName());
+        todo.setDate(task.getDate());
+        todo.setCompleted(task.getCompleted());
+        todo.setUser(userRepository.findByUsername(task.getUsername()).orElse(null));
 
-        something.setName(task.getName());
-        something.setDate(task.getDate());
-        something.setCompleted(task.getCompleted());
-        something.setUser(userRepository.findByUsername(task.getUsername()).orElse(null));
-
-        return new TodoDto(todoService.addTodo(something));
+        return new TodoDto(todoService.addTodo(todo));
     }
 
     @PutMapping("/update/{id}")
-    public TodoDto updateTask(@RequestBody TodoEntity todo, @PathVariable Long id) throws SQLException {
-        return new TodoDto(todoService.updateById(todo, id));
+    public TodoDto updateTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoEntity todo, @PathVariable Long id) throws AccessDeniedException {
+        TodoEntity existingTodo = todoService.getById(id);
+
+        if (existingTodo == null) {
+            throw new EntityNotFoundException("Todo not found with id: " + id);
+        }
+
+        String username = userDetails.getUsername();
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        if (!existingTodo.getUser().getUsername().equals(user.getUsername())) {
+            throw new AccessDeniedException("User does not have permission to modify this task");
+        }
+
+        existingTodo.setName(todo.getName());
+        existingTodo.setDate(todo.getDate());
+        existingTodo.setCompleted(todo.getCompleted());
+
+        TodoEntity updatedTodo = todoService.updateById(existingTodo, id);
+
+        return new TodoDto(updatedTodo);
     }
 
     @DeleteMapping("/delete/{id}")
