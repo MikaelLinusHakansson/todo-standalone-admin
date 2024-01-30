@@ -9,18 +9,13 @@ public class TodoDto {
     private String name;
     private String date;
     private Boolean completed;
+    private String username;
 
-    public TodoDto(Long id, String name, String date, Boolean completed) {
-        this.id = id;
+    public TodoDto(String name, String date, Boolean completed, String username) {
         this.name = name;
         this.date = date;
         this.completed = completed;
-    }
-
-    public TodoDto(String name, String date, Boolean completed) {
-        this.name = name;
-        this.date = date;
-        this.completed = completed;
+        this.username = username;
     }
 
     public TodoDto(TodoEntity todoEntity) {
@@ -28,8 +23,13 @@ public class TodoDto {
         this.name = todoEntity.getName();
         this.date = todoEntity.getDate();
         this.completed = todoEntity.getCompleted();
+        this.username = todoEntity.getUser().getUsername();
     }
 
     public TodoDto() {
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

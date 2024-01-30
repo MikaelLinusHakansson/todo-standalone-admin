@@ -32,6 +32,7 @@ public class TodoService {
     }
 
     public TodoEntity addTodo(TodoEntity task) {
+
         if (!task.getName().isBlank()) {
             todoRepository.save(task);
 

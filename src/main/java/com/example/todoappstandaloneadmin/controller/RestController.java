@@ -3,6 +3,7 @@ package com.example.todoappstandaloneadmin.controller;
 import com.example.todoappstandaloneadmin.dao.service.TodoDaoService;
 import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.repository.UserRepository;
 import com.example.todoappstandaloneadmin.service.TodoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ public class RestController {
     private final TodoService todoService;
     private final TodoDaoService todoDaoService;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public RestController(TodoService service, TodoDaoService todoDaoService) {
+    public RestController(TodoService service, TodoDaoService todoDaoService, UserRepository userRepository) {
         this.todoService = service;
         this.todoDaoService = todoDaoService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/getall")
@@ -44,8 +48,18 @@ public class RestController {
     }
 
     @PostMapping("/add")
-    public TodoDto addTodo(@RequestBody TodoEntity task) throws SQLException {
-        return new TodoDto(todoService.addTodo(task));
+    public TodoDto addTodo(@RequestBody TodoDto task) throws SQLException {
+        System.out.println("Adding task: ");
+        System.out.println(task);
+
+        TodoEntity something = new TodoEntity();
+
+        something.setName(task.getName());
+        something.setDate(task.getDate());
+        something.setCompleted(task.getCompleted());
+        something.setUser(userRepository.findByUsername(task.getUsername()).orElse(null));
+
+        return new TodoDto(todoService.addTodo(something));
     }
 
     @PutMapping("/update/{id}")

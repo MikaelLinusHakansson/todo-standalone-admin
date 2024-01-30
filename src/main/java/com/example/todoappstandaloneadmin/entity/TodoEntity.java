@@ -34,4 +34,8 @@ public class TodoEntity {
         this.date = date;
         this.completed = completed;
     }
+
+    public void setUserEntity(UserEntity user) {
+        this.user = user;
+    }
 }
