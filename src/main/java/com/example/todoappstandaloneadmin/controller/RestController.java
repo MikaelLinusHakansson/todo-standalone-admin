@@ -7,8 +7,12 @@ import com.example.todoappstandaloneadmin.repository.UserRepository;
 import com.example.todoappstandaloneadmin.service.TodoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +35,27 @@ public class RestController {
     }
 
     @GetMapping("/getall")
-    public List<TodoDto> getAllTodos() throws Exception {
-        List<TodoDto> todoDtos = new ArrayList<>();
+    public List<TodoDto> getAllTodos(@AuthenticationPrincipal UserDetails user) throws Exception {
+        if (user == null) {
+            throw new AccessDeniedException("User is not authenticated");
+        }
 
+        String username = user.getUsername();
+        int userId = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"))
+                .getId();
+
+        List<TodoDto> todoDtos = new ArrayList<>();
+        for (TodoEntity todo : todoService.getTodosByUserId(userId)) {
+            TodoDto tempDto = new TodoDto(todo);
+            todoDtos.add(tempDto);
+
+        }
+        /*List<TodoDto> todoDtos = new ArrayList<>();
         for (TodoEntity todoEntity : todoService.getAllTodos()) {
             TodoDto tempDto = new TodoDto(todoEntity);
             todoDtos.add(tempDto);
-        }
+        }*/
 
         return todoDtos;
     }

@@ -31,6 +31,10 @@ public class TodoService {
         throw new EntityNotFoundException("Could not find matching ID");
     }
 
+    public List<TodoEntity> getTodosByUserId(int userId) {
+        return todoRepository.findByUserId(userId);
+    }
+
     public TodoEntity addTodo(TodoEntity task) {
 
         if (!task.getName().isBlank()) {
