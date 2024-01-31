@@ -27,6 +27,12 @@ public class WebSecurityConfig {
         this.customerUserDetailService = customerUserDetailService;
     }
 
+    /**
+     * Generates a security filter chain for the given HttpSecurity.
+     *
+     * @param  http  the HttpSecurity object
+     * @return      the SecurityFilterChain object
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -50,6 +56,12 @@ public class WebSecurityConfig {
 
     }
 
+    /**
+     * Create an AuthenticationManager using the provided AuthenticationConfiguration.
+     *
+     * @param  authenticationConfiguration  the authentication configuration to use
+     * @return                            the created AuthenticationManager
+     */
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {

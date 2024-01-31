@@ -36,6 +36,12 @@ public class RestController {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Get all todos for the given user.
+     *
+     * @param  user  the authenticated user
+     * @return      the list of todo DTOs
+     */
     @GetMapping("/getall")
     public List<TodoDto> getAllTodos(@AuthenticationPrincipal UserDetails user) throws Exception {
         if (user == null) {
@@ -61,6 +67,12 @@ public class RestController {
         return new TodoDto(todoService.getById(id));
     }
 
+    /**
+     * Add a new todo item to the database.
+     *
+     * @param  task The todo item to be added
+     * @return      The added todo item
+     */
     @PostMapping("/add")
     public TodoDto addTodo(@RequestBody TodoDto task) throws SQLException {
         TodoEntity todo = new TodoEntity();
@@ -73,6 +85,14 @@ public class RestController {
         return new TodoDto(todoService.addTodo(todo));
     }
 
+    /**
+     * Update a task for the given user.
+     *
+     * @param  userDetails   the user details
+     * @param  todo         the updated todo entity
+     * @param  id           the id of the todo entity
+     * @return              the updated todo DTO
+     */
     @PutMapping("/update/{id}")
     public TodoDto updateTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoEntity todo, @PathVariable Long id) throws AccessDeniedException {
         TodoEntity existingTodo = todoService.getById(id);

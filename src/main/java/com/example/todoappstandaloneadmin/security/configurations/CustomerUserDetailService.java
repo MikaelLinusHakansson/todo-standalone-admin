@@ -26,6 +26,12 @@ public class CustomerUserDetailService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Loads user details by username.
+     *
+     * @param  username   the username to load user details for
+     * @return            the user details for the given username
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
@@ -33,6 +39,12 @@ public class CustomerUserDetailService implements UserDetailsService {
         return new User(userEntity.getUsername(), userEntity.getPassword(), mapRolesToAuthorities(userEntity.getRoles()));
     }
 
+    /**
+     * Maps roles to authorities.
+     *
+     * @param  roles   the list of user roles to map
+     * @return        the collection of granted authorities
+     */
     private Collection<GrantedAuthority> mapRolesToAuthorities(List<UserRoles> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
