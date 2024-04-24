@@ -1,5 +1,6 @@
 package com.example.todoappstandaloneadmin.entity;
 
+import com.example.todoappstandaloneadmin.dto.TodoDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -37,5 +38,24 @@ public class TodoEntity {
 
     public void setUserEntity(UserEntity user) {
         this.user = user;
+    }
+
+    public static TodoEntity fromEntity(TodoEntity todoEntity) {
+        return new TodoEntity(todoEntity.getName(), todoEntity.getDate(), todoEntity.getCompleted());
+    }
+
+    public static TodoEntity valueOf(TodoDto todoDto) {
+        return new TodoEntity(todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+    }
+
+    public static TodoEntity fromDto(TodoDto todoDto) {
+        return new TodoEntity(todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+    }
+
+    public TodoEntity update(TodoDto todoDTO) {
+        this.name = todoDTO.getName();
+        this.date = todoDTO.getDate();
+        this.completed = todoDTO.getCompleted();
+        return this;
     }
 }

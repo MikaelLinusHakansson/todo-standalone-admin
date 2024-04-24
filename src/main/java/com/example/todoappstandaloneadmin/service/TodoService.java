@@ -1,5 +1,6 @@
 package com.example.todoappstandaloneadmin.service;
 
+import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.exceptions.badRequest.EntityNameNotFoundBadRequest;
 import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
@@ -7,6 +8,7 @@ import com.example.todoappstandaloneadmin.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,27 +25,26 @@ public class TodoService {
     }
 
     public TodoEntity getById(Long id) {
-        for (TodoEntity allTodo : getAllTodos()) {
-            if (id.equals(allTodo.getId())) {
-                return allTodo;
-            }
-        }
-        throw new EntityNotFoundException("Could not find matching ID");
+        return todoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Could not find matching ID"));
     }
 
-    public List<TodoEntity> getTodosByUserId(int userId) {
-        return todoRepository.findByUserId(userId);
+    public List<TodoDto> getTodosByUserId(int userId) {
+        List<TodoDto> todoDTOS = new ArrayList<>();
+
+        for (TodoEntity todoEntity : todoRepository.findByUserId(userId)) {
+            TodoDto todoDTO = TodoDto.fromEntity(todoEntity);
+            todoDTOS.add(todoDTO);
+        }
+
+        return todoDTOS;
     }
 
     public TodoEntity addTodo(TodoEntity task) {
-
         if (!task.getName().isBlank()) {
             todoRepository.save(task);
 
             return task;
-        }
-
-        else {
+        } else {
             throw new EntityNameNotFoundBadRequest("Name is empty");
         }
     }
@@ -51,9 +52,7 @@ public class TodoService {
     public TodoEntity updateById(TodoEntity todo, Long id) {
         if (todoRepository.findById(id).isPresent()) {
             return todoRepository.save(todo);
-        }
-
-        else {
+        } else {
             throw new EntityNotFoundException("Could not find matching ID");
         }
     }
@@ -61,9 +60,7 @@ public class TodoService {
     public void removeTodo(Long id) {
         if (todoRepository.findById(id).isPresent()) {
             todoRepository.deleteById(id);
-        }
-
-        else {
+        } else {
             throw new EntityNotFoundException("Could not find matching ID");
         }
     }

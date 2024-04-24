@@ -32,4 +32,8 @@ public class TodoDto {
     public String getUsername() {
         return username;
     }
+
+    public static TodoDto fromEntity(TodoEntity todoEntity) {
+        return new TodoDto(todoEntity);
+    }
 }

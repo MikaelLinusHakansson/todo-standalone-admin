@@ -4,7 +4,6 @@ import com.example.todoappstandaloneadmin.dao.service.TodoDaoService;
 import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.entity.UserEntity;
-import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import com.example.todoappstandaloneadmin.repository.UserRepository;
 import com.example.todoappstandaloneadmin.service.TodoService;
 
@@ -15,8 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -53,17 +50,11 @@ public class RestController {
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"))
                 .getId();
 
-        List<TodoDto> todoDtos = new ArrayList<>();
-        for (TodoEntity todo : todoService.getTodosByUserId(userId)) {
-            TodoDto tempDto = new TodoDto(todo);
-            todoDtos.add(tempDto);
-
-        }
-        return todoDtos;
+        return todoService.getTodosByUserId(userId);
     }
 
     @GetMapping("/getbyid/{id}")
-    public TodoDto getById(@PathVariable Long id) throws SQLException {
+    public TodoDto getById(@PathVariable Long id) throws Exception {
         return new TodoDto(todoService.getById(id));
     }
 
@@ -74,15 +65,14 @@ public class RestController {
      * @return      The added todo item
      */
     @PostMapping("/add")
-    public TodoDto addTodo(@RequestBody TodoDto task) throws SQLException {
-        TodoEntity todo = new TodoEntity();
+    public TodoDto addTodo(@RequestBody TodoDto task) throws Exception {
+        TodoEntity todo = TodoEntity.fromDto(task);
 
-        todo.setName(task.getName());
-        todo.setDate(task.getDate());
-        todo.setCompleted(task.getCompleted());
         todo.setUser(userRepository.findByUsername(task.getUsername()).orElse(null));
 
-        return new TodoDto(todoService.addTodo(todo));
+        TodoEntity savedTodo = todoService.addTodo(todo);
+
+        return TodoDto.fromEntity(savedTodo);
     }
 
     /**
@@ -94,12 +84,8 @@ public class RestController {
      * @return              the updated todo DTO
      */
     @PutMapping("/update/{id}")
-    public TodoDto updateTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoEntity todo, @PathVariable Long id) throws AccessDeniedException {
+    public TodoDto updateTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoDto todo, @PathVariable Long id) throws AccessDeniedException {
         TodoEntity existingTodo = todoService.getById(id);
-
-        if (existingTodo == null) {
-            throw new EntityNotFoundException("Todo not found with id: " + id);
-        }
 
         String username = userDetails.getUsername();
         UserEntity user = userRepository.findByUsername(username)
@@ -109,17 +95,15 @@ public class RestController {
             throw new AccessDeniedException("User does not have permission to modify this task");
         }
 
-        existingTodo.setName(todo.getName());
-        existingTodo.setDate(todo.getDate());
-        existingTodo.setCompleted(todo.getCompleted());
+        existingTodo.update(todo);
 
         TodoEntity updatedTodo = todoService.updateById(existingTodo, id);
 
-        return new TodoDto(updatedTodo);
+        return TodoDto.fromEntity(updatedTodo);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void removeById(@PathVariable Long id) throws SQLException {
+    public void removeById(@PathVariable Long id) throws Exception {
         todoService.removeTodo(id);
     }
 }
