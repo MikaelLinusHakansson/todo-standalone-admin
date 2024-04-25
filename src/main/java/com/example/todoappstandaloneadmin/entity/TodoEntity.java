@@ -36,6 +36,13 @@ public class TodoEntity {
         this.completed = completed;
     }
 
+    public TodoEntity(Long id, String name, String date, Boolean completed) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.completed = completed;
+    }
+
     public void setUserEntity(UserEntity user) {
         this.user = user;
     }
@@ -49,13 +56,15 @@ public class TodoEntity {
     }
 
     public static TodoEntity fromDto(TodoDto todoDto) {
-        return new TodoEntity(todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+        return new TodoEntity(todoDto.getId(), todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
     }
 
-    public TodoEntity update(TodoDto todoDTO) {
+    public TodoEntity update(TodoDto todoDTO, UserEntity user) {
+        this.id = todoDTO.getId();
         this.name = todoDTO.getName();
         this.date = todoDTO.getDate();
         this.completed = todoDTO.getCompleted();
+        this.user = user;
         return this;
     }
 }
