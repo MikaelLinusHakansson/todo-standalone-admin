@@ -3,6 +3,9 @@ package com.example.todoappstandaloneadmin.dto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import lombok.Data;
 
+import java.util.List;
+import java.util.ArrayList;
+
 @Data
 public class TodoDto {
     private Long id;
@@ -31,5 +34,23 @@ public class TodoDto {
 
     public String getUsername() {
         return username;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public static TodoDto fromEntity(TodoEntity todoEntity) {
+        return new TodoDto(todoEntity);
+    }
+
+    public static List<TodoDto> valueOf(List<TodoEntity> todoEntities) {
+        List<TodoDto> todoDTOS = new ArrayList<>();
+
+        for (TodoEntity todoEntity : todoEntities) {
+            todoDTOS.add(TodoDto.fromEntity(todoEntity));
+        }
+
+        return todoDTOS;
     }
 }
