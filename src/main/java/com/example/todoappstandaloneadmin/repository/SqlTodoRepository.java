@@ -49,47 +49,66 @@ public class SqlTodoRepository implements TodoRepository {
     }
 
     @Override
+    @Transactional
     public <S extends TodoEntity> Iterable<S> saveAll(Iterable<S> entities) {
-        return null;
+        for (S entity : entities) {
+            entityManager.persist(entity);
+        }
+
+        return entities;
     }
 
     @Override
     public Optional<TodoEntity> findById(Long aLong) {
-        return Optional.empty();
+        TodoEntity todo = entityManager.find(TodoEntity.class, aLong);
+        return Optional.of(todo);
     }
 
     @Override
     public boolean existsById(Long aLong) {
-        return false;
+        return entityManager.find(TodoEntity.class, aLong) != null;
     }
 
     @Override
     public Iterable<TodoEntity> findAll() {
-        return null;
+        return entityManager.createQuery("SELECT t FROM TodoEntity t", TodoEntity.class)
+                .getResultList();
     }
 
     @Override
     public Iterable<TodoEntity> findAllById(Iterable<Long> longs) {
-        return null;
+
+        return entityManager.createQuery("SELECT t FROM TodoEntity t WHERE t.id IN :longs", TodoEntity.class)
+                .setParameter("longs", longs)
+                .getResultList();
     }
 
     @Override
     public long count() {
-        return 0;
+
+        return entityManager.createQuery("SELECT COUNT(t) FROM TodoEntity t", Long.class).getSingleResult();
     }
 
     @Override
+    @Transactional
     public void deleteAllById(Iterable<? extends Long> longs) {
+        entityManager.createQuery("DELETE FROM TodoEntity t WHERE t.id IN :longs")
+                .setParameter("longs", longs)
+                .executeUpdate();
 
     }
 
     @Override
+    @Transactional
     public void deleteAll(Iterable<? extends TodoEntity> entities) {
-
+        for (TodoEntity entity : entities) {
+            entityManager.remove(entity);
+        }
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
-
+        entityManager.createQuery("DELETE FROM TodoEntity t").executeUpdate();
     }
 }
