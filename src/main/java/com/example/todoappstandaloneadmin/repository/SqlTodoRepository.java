@@ -35,6 +35,20 @@ public class SqlTodoRepository implements TodoRepository {
     }
 
     @Override
+    @Transactional
+    public void deleteById(Long aLong) {
+        TodoEntity todo = entityManager.find(TodoEntity.class, aLong);
+        entityManager.remove(todo);
+    }
+
+    @Override
+    @Transactional
+    public void delete(TodoEntity entity) {
+        TodoEntity todo = entityManager.find(TodoEntity.class, entity.getId());
+        entityManager.remove(todo);
+    }
+
+    @Override
     public <S extends TodoEntity> Iterable<S> saveAll(Iterable<S> entities) {
         return null;
     }
@@ -62,20 +76,6 @@ public class SqlTodoRepository implements TodoRepository {
     @Override
     public long count() {
         return 0;
-    }
-
-    @Transactional
-    @Override
-    public void deleteById(Long aLong) {
-        TodoEntity todo = entityManager.find(TodoEntity.class, aLong);
-        entityManager.remove(todo);
-    }
-
-    @Override
-    @Transactional
-    public void delete(TodoEntity entity) {
-        TodoEntity todo = entityManager.find(TodoEntity.class, entity.getId());
-        entityManager.remove(todo);
     }
 
     @Override
