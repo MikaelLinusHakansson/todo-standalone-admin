@@ -67,8 +67,8 @@ public class RestController {
      * @return              the updated todo DTO
      */
     @PutMapping("/update")
-    public TodoDto updateTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoDto todo) throws Exception {
-        TodoEntity updatedTodo = todoService.updateById(todo, userDetails);
+    public TodoDto updateTask(@RequestBody TodoDto todo) throws Exception {
+        TodoEntity updatedTodo = todoService.updateById(todo);
         return TodoDto.fromEntity(updatedTodo);
     }
 

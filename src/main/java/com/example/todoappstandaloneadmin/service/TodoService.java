@@ -52,7 +52,6 @@ public class TodoService {
                 sqlTodoRepository.save(task);
 
                 return task;
-
             }
 
             else {
@@ -65,14 +64,30 @@ public class TodoService {
         }
     }
 
-    public TodoEntity updateById(TodoDto todo, UserDetails userDetails) throws Exception {
-        String username = userDetails.getUsername();
+    public TodoEntity updateById(TodoDto todo) throws Exception {
+        String username = sqlTodoRepository.findById(todo.getId()).get().getUsername();
 
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        if (!todo.getUsername().equals(user.getUsername())) {
+        if (!username.equals(user.getUsername())) {
             throw new AccessDeniedException("User does not have permission to modify this task");
+        }
+
+        if (todo.getName() == null || todo.getName().isBlank()) {
+            todo.setName(sqlTodoRepository.findById(todo.getId()).get().getName());
+        }
+
+        if (todo.getDate() == null) {
+            todo.setDate(sqlTodoRepository.findById(todo.getId()).get().getDate());
+        }
+
+        if (todo.getCompleted() == null) {
+            todo.setCompleted(sqlTodoRepository.findById(todo.getId()).get().getCompleted());
+        }
+
+        if (todo.getUsername() == null) {
+            todo.setUsername(sqlTodoRepository.findById(todo.getId()).get().getUsername());
         }
 
         TodoEntity existingTodo = new TodoEntity();

@@ -25,26 +25,12 @@ public class TodoEntity {
     public TodoEntity() {
     }
 
-    public TodoEntity(String name, String date) {
-        this.name = name;
-        this.date = date;
+    public void setUsername(String username) {
+        this.user.setUsername(username);
     }
 
-    public TodoEntity(String name, String date, Boolean completed) {
-        this.name = name;
-        this.date = date;
-        this.completed = completed;
-    }
-
-    public TodoEntity(Long id, String name, String date, Boolean completed) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.completed = completed;
-    }
-
-    public void setUserEntity(UserEntity user) {
-        this.user = user;
+    public String getUsername() {
+        return this.user.getUsername();
     }
 
     public static TodoEntity valueOf(TodoDto todoDto) {

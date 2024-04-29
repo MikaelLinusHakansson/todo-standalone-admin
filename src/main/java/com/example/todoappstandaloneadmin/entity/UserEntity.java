@@ -24,4 +24,12 @@ public class UserEntity {
 
     /*@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TodoEntity> todos = new ArrayList<>();*/
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
