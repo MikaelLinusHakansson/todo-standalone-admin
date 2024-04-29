@@ -14,21 +14,6 @@ public class TodoDto {
     private Boolean completed;
     private String username;
 
-    public TodoDto(String name, String date, Boolean completed, String username) {
-        this.name = name;
-        this.date = date;
-        this.completed = completed;
-        this.username = username;
-    }
-
-    public TodoDto(TodoEntity todoEntity) {
-        this.id = todoEntity.getId();
-        this.name = todoEntity.getName();
-        this.date = todoEntity.getDate();
-        this.completed = todoEntity.getCompleted();
-        this.username = todoEntity.getUser().getUsername();
-    }
-
     public TodoDto() {
     }
 
@@ -41,10 +26,21 @@ public class TodoDto {
     }
 
     public static TodoDto fromEntity(TodoEntity todoEntity) {
-        return new TodoDto(todoEntity);
+        TodoDto todoDto = new TodoDto();
+
+        todoDto.setId(todoEntity.getId());
+        todoDto.setName(todoEntity.getName());
+        todoDto.setDate(todoEntity.getDate());
+        todoDto.setCompleted(todoEntity.getCompleted());
+
+        if (!todoEntity.getUser().getUsername().isBlank()) {
+            todoDto.setUsername(todoEntity.getUser().getUsername());
+        }
+
+        return todoDto;
     }
 
-    public static List<TodoDto> valueOf(List<TodoEntity> todoEntities) {
+    public static List<TodoDto> valuesOf(List<TodoEntity> todoEntities) {
         List<TodoDto> todoDTOS = new ArrayList<>();
 
         for (TodoEntity todoEntity : todoEntities) {

@@ -25,38 +25,33 @@ public class TodoEntity {
     public TodoEntity() {
     }
 
-    public TodoEntity(String name, String date) {
-        this.name = name;
-        this.date = date;
+    public void setUsername(String username) {
+        this.user.setUsername(username);
     }
 
-    public TodoEntity(String name, String date, Boolean completed) {
-        this.name = name;
-        this.date = date;
-        this.completed = completed;
-    }
-
-    public TodoEntity(Long id, String name, String date, Boolean completed) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.completed = completed;
-    }
-
-    public void setUserEntity(UserEntity user) {
-        this.user = user;
-    }
-
-    public static TodoEntity fromEntity(TodoEntity todoEntity) {
-        return new TodoEntity(todoEntity.getName(), todoEntity.getDate(), todoEntity.getCompleted());
+    public String getUsername() {
+        return this.user.getUsername();
     }
 
     public static TodoEntity valueOf(TodoDto todoDto) {
-        return new TodoEntity(todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+        TodoEntity todoEntity = new TodoEntity();
+
+        todoEntity.setName(todoDto.getName());
+        todoEntity.setDate(todoDto.getDate());
+        todoEntity.setCompleted(todoDto.getCompleted());
+
+        return todoEntity;
     }
 
     public static TodoEntity fromDto(TodoDto todoDto) {
-        return new TodoEntity(todoDto.getId(), todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+        TodoEntity todoEntity = new TodoEntity();
+
+        todoEntity.setId(todoDto.getId());
+        todoEntity.setName(todoDto.getName());
+        todoEntity.setDate(todoDto.getDate());
+        todoEntity.setCompleted(todoDto.getCompleted());
+
+        return todoEntity;
     }
 
     public TodoEntity update(TodoDto todoDTO, UserEntity user) {
@@ -65,6 +60,7 @@ public class TodoEntity {
         this.date = todoDTO.getDate();
         this.completed = todoDTO.getCompleted();
         this.user = user;
+
         return this;
     }
 }

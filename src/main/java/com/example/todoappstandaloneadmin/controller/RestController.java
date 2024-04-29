@@ -35,12 +35,12 @@ public class RestController {
      */
     @GetMapping("/getall")
     public List<TodoDto> getAllTodos(@AuthenticationPrincipal UserDetails user) throws Exception {
-       return TodoDto.valueOf(todoService.getTodosByUserId(user));
+       return TodoDto.valuesOf(todoService.getTodosByUserId(user));
     }
 
     @GetMapping("/getbyid/{id}")
     public TodoDto getById(@PathVariable Long id) throws Exception {
-        return new TodoDto(todoService.getById(id));
+        return TodoDto.fromEntity(todoService.getById(id));
     }
 
     /**
@@ -67,8 +67,8 @@ public class RestController {
      * @return              the updated todo DTO
      */
     @PutMapping("/update")
-    public TodoDto updateTask(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TodoDto todo) throws Exception {
-        TodoEntity updatedTodo = todoService.updateById(todo, userDetails);
+    public TodoDto updateTask(@RequestBody TodoDto todo) throws Exception {
+        TodoEntity updatedTodo = todoService.updateById(todo);
         return TodoDto.fromEntity(updatedTodo);
     }
 
