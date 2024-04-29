@@ -47,16 +47,25 @@ public class TodoEntity {
         this.user = user;
     }
 
-    public static TodoEntity fromEntity(TodoEntity todoEntity) {
-        return new TodoEntity(todoEntity.getName(), todoEntity.getDate(), todoEntity.getCompleted());
-    }
-
     public static TodoEntity valueOf(TodoDto todoDto) {
-        return new TodoEntity(todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+        TodoEntity todoEntity = new TodoEntity();
+
+        todoEntity.setName(todoDto.getName());
+        todoEntity.setDate(todoDto.getDate());
+        todoEntity.setCompleted(todoDto.getCompleted());
+
+        return todoEntity;
     }
 
     public static TodoEntity fromDto(TodoDto todoDto) {
-        return new TodoEntity(todoDto.getId(), todoDto.getName(), todoDto.getDate(), todoDto.getCompleted());
+        TodoEntity todoEntity = new TodoEntity();
+
+        todoEntity.setId(todoDto.getId());
+        todoEntity.setName(todoDto.getName());
+        todoEntity.setDate(todoDto.getDate());
+        todoEntity.setCompleted(todoDto.getCompleted());
+
+        return todoEntity;
     }
 
     public TodoEntity update(TodoDto todoDTO, UserEntity user) {
@@ -65,6 +74,7 @@ public class TodoEntity {
         this.date = todoDTO.getDate();
         this.completed = todoDTO.getCompleted();
         this.user = user;
+
         return this;
     }
 }

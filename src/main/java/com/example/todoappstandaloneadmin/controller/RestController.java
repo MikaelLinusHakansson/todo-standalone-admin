@@ -35,12 +35,12 @@ public class RestController {
      */
     @GetMapping("/getall")
     public List<TodoDto> getAllTodos(@AuthenticationPrincipal UserDetails user) throws Exception {
-       return TodoDto.valueOf(todoService.getTodosByUserId(user));
+       return TodoDto.valuesOf(todoService.getTodosByUserId(user));
     }
 
     @GetMapping("/getbyid/{id}")
     public TodoDto getById(@PathVariable Long id) throws Exception {
-        return new TodoDto(todoService.getById(id));
+        return TodoDto.fromEntity(todoService.getById(id));
     }
 
     /**
