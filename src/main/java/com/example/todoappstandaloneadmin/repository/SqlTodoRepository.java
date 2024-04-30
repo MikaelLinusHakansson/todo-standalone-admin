@@ -61,7 +61,7 @@ public class SqlTodoRepository implements TodoRepository {
     @Override
     public Optional<TodoEntity> findById(Long aLong) {
         TodoEntity todo = entityManager.find(TodoEntity.class, aLong);
-        return Optional.of(todo);
+        return Optional.ofNullable(todo);
     }
 
     @Override
