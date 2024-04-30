@@ -1,7 +1,8 @@
 package com.example.todoappstandaloneadmin.repository;
 
-import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import org.springframework.data.repository.CrudRepository;
+
+import com.example.todoappstandaloneadmin.entity.TodoEntity;
 
 import java.util.List;
 
