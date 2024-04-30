@@ -1,5 +1,10 @@
 package com.example.todoappstandaloneadmin.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import com.example.todoappstandaloneadmin.dto.TodoDto;
 import com.example.todoappstandaloneadmin.entity.TodoEntity;
 import com.example.todoappstandaloneadmin.entity.UserEntity;
@@ -7,10 +12,6 @@ import com.example.todoappstandaloneadmin.exceptions.badRequest.EntityNameNotFou
 import com.example.todoappstandaloneadmin.exceptions.notFound.EntityNotFoundException;
 import com.example.todoappstandaloneadmin.repository.SqlTodoRepository;
 import com.example.todoappstandaloneadmin.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;

@@ -11,15 +11,12 @@ import java.util.Optional;
 
 @Repository
 public class SqlTodoRepository implements TodoRepository {
-
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<TodoEntity> findByUserId(int userId) {
-        return entityManager.createQuery(
-                        "SELECT t FROM TodoEntity t WHERE t.user.id = :userId", TodoEntity.class)
-                .setParameter("userId", userId)
-                .getResultList();
+        return entityManager.createQuery("SELECT t FROM TodoEntity t WHERE t.user.id = :userId", TodoEntity.class).setParameter("userId", userId).getResultList();
     }
 
     @Override
@@ -90,9 +87,7 @@ public class SqlTodoRepository implements TodoRepository {
     @Override
     @Transactional
     public void deleteAllById(Iterable<? extends Long> longs) {
-        entityManager.createQuery("DELETE FROM TodoEntity t WHERE t.id IN :longs")
-                .setParameter("longs", longs)
-                .executeUpdate();
+        entityManager.createQuery("DELETE FROM TodoEntity t WHERE t.id IN :longs").setParameter("longs", longs).executeUpdate();
     }
 
     @Override
