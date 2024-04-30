@@ -11,7 +11,6 @@ import com.example.todoappstandaloneadmin.service.TodoService;
 
 import java.util.List;
 
-
 @org.springframework.web.bind.annotation.RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("api/todo")
