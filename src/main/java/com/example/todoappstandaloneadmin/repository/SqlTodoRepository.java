@@ -84,7 +84,6 @@ public class SqlTodoRepository implements TodoRepository {
 
     @Override
     public long count() {
-
         return entityManager.createQuery("SELECT COUNT(t) FROM TodoEntity t", Long.class).getSingleResult();
     }
 
