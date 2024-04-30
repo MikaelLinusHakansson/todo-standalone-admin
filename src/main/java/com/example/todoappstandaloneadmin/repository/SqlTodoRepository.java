@@ -93,7 +93,6 @@ public class SqlTodoRepository implements TodoRepository {
         entityManager.createQuery("DELETE FROM TodoEntity t WHERE t.id IN :longs")
                 .setParameter("longs", longs)
                 .executeUpdate();
-
     }
 
     @Override
