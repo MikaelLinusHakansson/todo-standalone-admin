@@ -1,14 +1,13 @@
 package com.example.todoappstandaloneadmin.controller;
 
-import com.example.todoappstandaloneadmin.dao.service.TodoDaoService;
-import com.example.todoappstandaloneadmin.dto.TodoDto;
-import com.example.todoappstandaloneadmin.entity.TodoEntity;
-import com.example.todoappstandaloneadmin.service.TodoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.todoappstandaloneadmin.dto.TodoDto;
+import com.example.todoappstandaloneadmin.entity.TodoEntity;
+import com.example.todoappstandaloneadmin.service.TodoService;
 
 import java.util.List;
 
@@ -18,13 +17,10 @@ import java.util.List;
 @RequestMapping("api/todo")
 public class RestController {
     private final TodoService todoService;
-    private final TodoDaoService todoDaoService;
-
 
     @Autowired
-    public RestController(TodoService service, TodoDaoService todoDaoService) {
+    public RestController(TodoService service) {
         this.todoService = service;
-        this.todoDaoService = todoDaoService;
     }
 
     /**
@@ -61,9 +57,7 @@ public class RestController {
     /**
      * Update a task for the given user.
      *
-     * @param  userDetails   the user details
      * @param  todo         the updated todo entity
-     * @param  id           the id of the todo entity
      * @return              the updated todo DTO
      */
     @PutMapping("/update")

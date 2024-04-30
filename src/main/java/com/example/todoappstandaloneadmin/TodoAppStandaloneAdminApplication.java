@@ -10,5 +10,5 @@ public class TodoAppStandaloneAdminApplication {
 		SpringApplication.run(TodoAppStandaloneAdminApplication.class, args);
 	// TODO if being serious with keeping JDBC, then remove JPA and go 100%
 	}
-
+	// "\src\main\java\com\example\todoappstandaloneadmin\dao\repository\Dao.java"
 }
