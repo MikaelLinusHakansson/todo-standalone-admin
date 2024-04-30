@@ -77,7 +77,6 @@ public class SqlTodoRepository implements TodoRepository {
 
     @Override
     public Iterable<TodoEntity> findAllById(Iterable<Long> longs) {
-
         return entityManager.createQuery("SELECT t FROM TodoEntity t WHERE t.id IN :longs", TodoEntity.class)
                 .setParameter("longs", longs)
                 .getResultList();
@@ -85,7 +84,6 @@ public class SqlTodoRepository implements TodoRepository {
 
     @Override
     public long count() {
-
         return entityManager.createQuery("SELECT COUNT(t) FROM TodoEntity t", Long.class).getSingleResult();
     }
 
@@ -95,7 +93,6 @@ public class SqlTodoRepository implements TodoRepository {
         entityManager.createQuery("DELETE FROM TodoEntity t WHERE t.id IN :longs")
                 .setParameter("longs", longs)
                 .executeUpdate();
-
     }
 
     @Override
