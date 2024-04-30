@@ -77,7 +77,6 @@ public class SqlTodoRepository implements TodoRepository {
 
     @Override
     public Iterable<TodoEntity> findAllById(Iterable<Long> longs) {
-
         return entityManager.createQuery("SELECT t FROM TodoEntity t WHERE t.id IN :longs", TodoEntity.class)
                 .setParameter("longs", longs)
                 .getResultList();
