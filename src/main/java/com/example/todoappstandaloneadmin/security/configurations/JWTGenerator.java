@@ -3,6 +3,7 @@ package com.example.todoappstandaloneadmin.security.configurations;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,6 @@ public class JWTGenerator {
 
         return Jwts.builder()
                 .setSubject(username)
-//                .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, SecurityConstants.JWT_SECRET)
                 .compact();
@@ -53,7 +53,6 @@ public class JWTGenerator {
                     .setSigningKey(SecurityConstants.JWT_SECRET)
                     .build()
                     .parseSignedClaims(token);
-//                    .getPayload();
 
             return true;
         }
