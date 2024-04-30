@@ -21,7 +21,6 @@ import com.example.todoappstandaloneadmin.repository.UserRepository;
 import com.example.todoappstandaloneadmin.security.configurations.JWTGenerator;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
